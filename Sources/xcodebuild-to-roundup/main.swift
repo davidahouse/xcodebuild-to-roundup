@@ -25,10 +25,14 @@ for attachment in attachments {
     }
 }
 
+// Summarize
+let summary = AttachmentList(summary: AttachmentListSummary(count: uploadedAttachments.count),
+                             images: uploadedAttachments)
+
 // Write out our final list of uploaded files
 let jsonEncoder = JSONEncoder()
 do {
-    let encodedData = try jsonEncoder.encode(uploadedAttachments)
+    let encodedData = try jsonEncoder.encode(summary)
     try encodedData.write(to: URL(fileURLWithPath: arguments.output))
 } catch {
     print("Error encoding the json output")
