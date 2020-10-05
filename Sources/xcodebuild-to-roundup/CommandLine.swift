@@ -15,4 +15,10 @@ struct CommandLineArguments: ParsableArguments {
     
     @Option(help: ArgumentHelp("Specify the output file name for the JSON output"))
     var output: String
+    
+    @Option(help: ArgumentHelp("Specify the roundup server URL"))
+    var roundupURL: String
+    
+    @Option(help: ArgumentHelp("Specify the roundup content path to upload to"))
+    var contentPath: String
 }
