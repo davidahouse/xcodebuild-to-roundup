@@ -10,12 +10,20 @@ guard let resultKit = derivedData.recentResultFile() else {
     exit(1)
 }
 
+let server = RoundupServer(hostURL: arguments.roundupURL)
+
 // Collect a list of all the attachments in this XCResult file
 let attachments = resultKit.gatherAttachments(arguments: arguments)
 
 // Now try to upload them to the RoundUp server
-let uploadedAttachments: [TestAttachment] = []
-
+var uploadedAttachments: [TestAttachment] = []
+for attachment in attachments {
+    if let payloadID = attachment.payloadRef?.id, let exportedURL = resultKit.exportPayload(id: payloadID) {
+        if let uploaded = server.upload(exportedURL, name: attachment.name ?? "", fileName: attachment.filename ?? "", contentPath: arguments.contentPath) {
+            uploadedAttachments.append(uploaded)
+        }
+    }
+}
 
 // Write out our final list of uploaded files
 let jsonEncoder = JSONEncoder()
